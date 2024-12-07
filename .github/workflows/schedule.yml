@@ -1,0 +1,21 @@
+name: Scheduled Website Access
+
+on:
+  schedule:
+    # 使用 cron 表达式设置时间，这里是每天凌晨 1 点运行
+    - cron: '0 1 * * *'
+
+jobs:
+  access-website:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出仓库（如果需要使用代码的话）
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 使用 cURL 访问目标网站
+      - name: Access Website
+        run: |
+          curl -o /dev/null -s -w "%{http_code}\n" https://yfhao12.serv00.net >> access_log.txt
+          curl -o /dev/null -s -w "%{http_code}\n" https://yfhao1314.serv00.net >> access_log.txt
