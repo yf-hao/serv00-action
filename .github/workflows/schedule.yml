@@ -1,23 +1,23 @@
-name: Scheduled Website Access
+name: Access Website and Save Log
 
 on:
   schedule:
-    # 使用 cron 表达式设置时间，这里是每天凌晨 1 点运行
-    - cron: '0 1 * * *'
-
+    - cron: '0 1 * * *' # 每天凌晨 1 点执行
+  workflow_dispatch: # 手动触发工作流
 jobs:
   access-website:
     runs-on: ubuntu-latest
 
     steps:
-      # 检出仓库（如果需要使用代码的话）
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      # 使用 cURL 访问目标网站
-      - name: Access Website
+      - name: Create access log
         run: |
           mkdir -p logs
           echo "Accessing website at $(date)" >> logs/access_log.txt
-          curl -o /dev/null -s -w "%{http_code}\n" https://yfhao12.serv00.net >> access_log.txt
-          curl -o /dev/null -s -w "%{http_code}\n" https://yfhao1314.serv00.net >> access_log.txt
+          curl -o /dev/null -s -w "%{http_code}\n" https://yfhao12.serv00.net >> logs/access_log.txt
+          curl -o /dev/null -s -w "%{http_code}\n" https://yfhao1314.serv00.net >> logs/access_log.txt
+
+      - name: Upload access log
+        uses: actions/upload-artifact@v3
+        with:
+          name: access-log
+          path: logs/access_log.txt
