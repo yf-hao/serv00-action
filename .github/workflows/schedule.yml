@@ -17,5 +17,7 @@ jobs:
       # 使用 cURL 访问目标网站
       - name: Access Website
         run: |
+          mkdir -p logs
+          echo "Accessing website at $(date)" >> logs/access_log.txt
           curl -o /dev/null -s -w "%{http_code}\n" https://yfhao12.serv00.net >> access_log.txt
           curl -o /dev/null -s -w "%{http_code}\n" https://yfhao1314.serv00.net >> access_log.txt
